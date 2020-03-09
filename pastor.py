@@ -4,7 +4,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from testfunc import sillyFunc
 
-sillyFunc(6,4)
 def pastorXPath(xpath, sheetCell):
     driver = webdriver.Firefox()
     driver.implicitly_wait(10)
@@ -15,4 +14,4 @@ def pastorXPath(xpath, sheetCell):
     print(sheetCell)
 
 #pastorXPath('/html/body/div/div[4]/form/div[2]/div[1]/div[1]/div/div[2]/input', 'Billy Webb')
-#testfunc(4,6)
+#sillyFunc(4,6)
