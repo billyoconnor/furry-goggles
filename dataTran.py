@@ -1,3 +1,4 @@
+#Script for handling data cleaning aspect of program
 import os
 import tkinter.messagebox
 from tkinter import Tk
@@ -13,11 +14,13 @@ path1 = askopenfilename() # show an "Open" dialog box and return the path to the
 
 wb1 = openpyxl.load_workbook(path1,data_only = True) # Create a variable 'wb1' to operate on spreadsheet in question
 ws1 = wb1.worksheets[5] #Need to specify worksheet name
+
 assName = os.path.basename(path1) # storing filename of workbook to using in Naming later
 assName = os.path.splitext(assName)[0]
 cutPoint = assName.find('Index') # Cutting filename to relevant bit
 assNameLength = len(assName)
 assName = assName[cutPoint:assNameLength] # Will give a strange value if there is no 'index' in the name
+
 wb2 = openpyxl.Workbook()
 ws2 = wb2.create_sheet(index=0, title='temp') # copying spreadsheet data to temporary spreadsheet in stripped format
 for row in ws1:
@@ -37,7 +40,7 @@ df3 = pd.merge(df1,df2[['ExcelQ','Value']],on='ExcelQ', how='left') #Merging two
 deter = np.where(df3['ExcelQ'] == 0, df3['Static Values'], df3['Value']) # Pulling across static values
 deter = pd.DataFrame(deter).fillna(0)#replace NaN values with 0
 df3['Value2'] = deter #adding a column which contains excel values and static values
-df3.to_excel('dataframe.xlsx')
+df3.to_excel('dataframe.xlsx') #Saving output to excel for reading later
 
 wb3 = openpyxl.load_workbook('dataframe.xlsx')
 ws3 = wb3.worksheets[0]
