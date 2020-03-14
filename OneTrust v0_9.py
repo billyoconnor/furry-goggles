@@ -9,6 +9,10 @@ from selenium.webdriver.common.keys import Keys
 import dataTran
 
 
+def pastorID(driver,ID, sheetCell):
+    driver = driver.find_element_by_id(ID)
+    driver.clear()
+    driver.send_keys(sheetCell)
 
 # Begin web work
     #Begin login section
@@ -16,6 +20,9 @@ driver = webdriver.Firefox()
 driver.get("https://app-eu.onetrust.com/auth/login") #open login page
 Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 tkinter.messagebox.showinfo(title="Wait!", message="Please Allow page to load in background before clicking 'Ok'")
+
+email_form2 = pastorID(driver,'ot_form-element_0','billy.webb@vodafone.com')
+
 email_form = driver.find_element_by_id('ot_form-element_0') #enter e-mail into login form
 email_form.clear()
 email_form.send_keys("billy.webb@vodafone.com")
