@@ -6,13 +6,9 @@ import openpyxl
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import dataTran
-
-
-def pastorID(driver,ID, sheetCell):
-    driver = driver.find_element_by_id(ID)
-    driver.clear()
-    driver.send_keys(sheetCell)
+import dataTran as dt
+import pastor
+import time
 
 # Begin web work
     #Begin login section
@@ -21,37 +17,48 @@ driver.get("https://app-eu.onetrust.com/auth/login") #open login page
 Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 tkinter.messagebox.showinfo(title="Wait!", message="Please Allow page to load in background before clicking 'Ok'")
 
-email_form2 = pastorID(driver,'ot_form-element_0','billy.webb@vodafone.com')
+email_form = pastor.pastorID(driver,'ot_form-element_0',dt.ws3['F6'].value,'enter')
 
-email_form = driver.find_element_by_id('ot_form-element_0') #enter e-mail into login form
-email_form.clear()
-email_form.send_keys("billy.webb@vodafone.com")
-email_form.send_keys(Keys.RETURN)
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 tkinter.messagebox.showinfo(title="Wait!", message="Please Allow page to load in background before clicking 'Ok'")
-password_form = driver.find_element_by_id('ot_form-element_1')
-password_form.clear()
-password_form.send_keys("Letmein1!")
-password_form.send_keys(Keys.RETURN)
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-tkinter.messagebox.showinfo(title="Wait!", message="Please Allow page to load in background before clicking 'Ok'")
-#put delay to wait until form finishes loading
-    #End Login section
 
-    #Begin Assessment Details Section
+password_form = pastor.pastorID(driver,'ot_form-element_1','Letmein1!','enter')
+
+
+tkinter.messagebox.showinfo(title="Wait!", message="Please Allow page to load in background before clicking 'Ok'")
+#End Login section
+
+#Begin Assessment Details Section
+#Put an Option here to edit an existing assesment
+
 driver.get("https://app-eu.onetrust.com/app/#/pia/assessment/wizard/info/1e3ef905-4efd-4b74-835a-c0bc9767e65d/1")
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 tkinter.messagebox.showinfo(title="Wait!", message="Please Allow page to load in background before clicking 'Ok'")
 nameID = driver.find_element(By.XPATH, '//input[@placeholder="Enter Assessment Name"]').get_attribute("ID")
 name = driver.find_element_by_id(nameID)
-name.send_keys(assName)
-#approver = driver.find_element_by_xpath('/html/body/app-root/div/div/ui-view/ui-view/ui-view/div/div/div[1]/ui-view/ui-view/downgrade-aa-start-wizard/section/aa-create-metadata-form/div/form/div/div[5]/div/ot-org-user-multi-select/div/div/div/ot-org-user/div/div/ot-lookup/div/div/div/input')
-#approver.send_keys('James Taylor')
-#approver.send_keys(Keys.RETURN)
-#respondent = driver.find_element_by_xpath('/html/body/app-root/div/div/ui-view/ui-view/ui-view/div/div/div[1]/ui-view/ui-view/downgrade-aa-start-wizard/section/aa-create-metadata-form/div/form/div/div[6]/div/ot-org-user-multi-select/div/div/div/ot-org-user/div/div/ot-lookup/div/div/div/input')
-#respondent.click()
-#respondent.send_keys('Billy Webb')
-#respondent.click()
+name.send_keys(dt.assName)
+
+approver = driver.find_element_by_xpath("//*[contains(@ot-auto-id,'ot_lookup-input_16')]")
+approver.click()
+approver.clear
+approver.send_keys('James Taylor')
+#i = 0
+#while i < 4:
+#	respondent.send_keys(Keys.ARROW_DOWN)
+#	i = i + 1
+
+time.sleep(2)
+
+clickName = driver.find_element_by_xpath("//*[contains(@style,'translateY(0px)')]")
+clickName.click()
+
+respondent = driver.find_element_by_xpath("//*[contains(@ot-auto-id,'ot_lookup-input_20')]")
+respondent.click()
+respondent.clear()
+time.sleep(2)
+respondentName = driver.find_element_by_css_selector('#ot_listbox-unique-id_21 > ul:nth-child(1) > od-virtualscroll:nth-child(1) > div:nth-child(1) > od-virtualrow:nth-child(2) > li:nth-child(2) > button:nth-child(1)')
+respondentName.click()
+
+
+
 Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 tkinter.messagebox.showinfo(title="Hold up!", message="Please Complete the Approver and Respondent fields BEFORE clicking 'ok'")
 buttonLaunch = driver.find_element_by_xpath('/html/body/app-root/div/div/ui-view/ui-view/ui-view/div/div/div[1]/ui-view/ui-view/downgrade-aa-start-wizard/section/footer/div/button[2]')
