@@ -46,3 +46,6 @@ wb3 = openpyxl.load_workbook('dataframe.xlsx')
 ws3 = wb3.worksheets[0]
 ws3['F2'] = assName # saving a assignment name, technically redundent
 wb3.save('dataframe.xlsx')
+
+#Edit Values? Click save when done.
+inpu

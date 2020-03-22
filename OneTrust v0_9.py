@@ -36,7 +36,7 @@ nameID = driver.find_element(By.XPATH, '//input[@placeholder="Enter Assessment N
 name = driver.find_element_by_id(nameID)
 name.send_keys(dt.assName)
 
-approver = driver.find_element_by_xpath("//*[contains(@ot-auto-id,'ot_lookup-input_16')]")
+approver = driver.find_element(By.XPATH, '//div[5]/div/ot-org-user-multi-select/div/div/div/ot-org-user/div/div/ot-lookup/div/div/div/input[@placeholder="Select an Assignee"]')
 approver.click()
 approver.clear
 approver.send_keys('James Taylor')
@@ -50,32 +50,30 @@ time.sleep(2)
 clickName = driver.find_element_by_xpath("//*[contains(@style,'translateY(0px)')]")
 clickName.click()
 
-respondent = driver.find_element_by_xpath("//*[contains(@ot-auto-id,'ot_lookup-input_20')]")
+respondent = driver.find_element(By.XPATH, '//div[6]/div/ot-org-user-multi-select/div/div/div/ot-org-user/div/div/ot-lookup/div/div/div/input[@placeholder="Select an Assignee"]')
 respondent.click()
 respondent.clear()
 time.sleep(2)
-respondentName = driver.find_element_by_css_selector('#ot_listbox-unique-id_21 > ul:nth-child(1) > od-virtualscroll:nth-child(1) > div:nth-child(1) > od-virtualrow:nth-child(2) > li:nth-child(2) > button:nth-child(1)')
+respondentName = driver.find_element_by_xpath("//div[6]/div/ot-org-user-multi-select/div/div/div/ot-org-user/div/div/ot-lookup/div/div/div[2]/ul/od-virtualscroll/div/od-virtualrow[1][contains(@style,'translateY(0px)')]")
 respondentName.click()
 
 
+#tkinter.messagebox.showinfo(title="Hold up!", message="Please Complete the Approver and Respondent fields BEFORE clicking 'ok'")
+launchButton = driver.find_element(By.XPATH, '//button[@ot-auto-id="AAStartWizardLaunchButton"]')
+launchButton.click()
 
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-tkinter.messagebox.showinfo(title="Hold up!", message="Please Complete the Approver and Respondent fields BEFORE clicking 'ok'")
-buttonLaunch = driver.find_element_by_xpath('/html/body/app-root/div/div/ui-view/ui-view/ui-view/div/div/div[1]/ui-view/ui-view/downgrade-aa-start-wizard/section/footer/div/button[2]')
-buttonLaunch.click()
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 tkinter.messagebox.showinfo(title="Hold up!", message="Please wait until page completes loading before clicking 'ok'")
+
+
 #Post Launch
-projectDetails = driver.find_element_by_xpath('/html/body/app-root/div/div/ui-view/ui-view/ui-view/div/div/div[1]/ui-view/downgrade-assessment-detail/section/div[2]/div/div[1]/aa-section-list-filter/section/section/div[3]/div[2]')
-projectDetails.click()
+projectDetails = pastor.pastorXPath(driver, '//aa-section-list-filter/section/section/div[3]/div[2]', 0, 0, 1)
+
 wb4 = openpyxl.load_workbook('dataframe.xlsx')
 ws4 = wb4['Sheet1']
 # Start filling in details from data sheet
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 tkinter.messagebox.showinfo(title="Hold up!", message="Please wait until page completes loading before clicking 'ok'")
-requestorName = driver.find_element_by_xpath('/html/body/app-root/div/div/ui-view/ui-view/ui-view/div/div/div[1]/ui-view/downgrade-assessment-detail/section/div[2]/div/div[2]/div/div/assessment-detail-question-group/assessment-detail-question[1]/div/div/div/div[1]/aa-rich-text-editor/div/div/ot-rich-text-editor/div[2]/div[1]')
-requestorAnswer = ws4['f5'].value
-requestorName.send_keys(requestorAnswer)
+requestorName = pastor.pastorXPath(driver, '//aa-rich-text-editor/div/div/ot-rich-text-editor/div[2]/div[1]', ws4['f5'].value, 0, 0)
+
 contactDetails = driver.find_element_by_xpath('/html/body/app-root/div/div/ui-view/ui-view/ui-view/div/div/div[1]/ui-view/downgrade-assessment-detail/section/div[2]/div/div[2]/div/div/assessment-detail-question-group/assessment-detail-question[2]/div/div/div/div[1]/aa-rich-text-editor/div/div/ot-rich-text-editor/div[2]/div[1]')
 contactAnswer = ws4['f6'].value
 contactDetails.send_keys(contactAnswer)
